@@ -7,6 +7,7 @@ _logger = logging.getLogger(__name__)
 
 _REQUEST_FILE_PATTERNS = ['*.txt']
 
+
 class _CommandFileCreationHandler(PatternMatchingEventHandler):
 
     def __init__(self):
@@ -14,16 +15,18 @@ class _CommandFileCreationHandler(PatternMatchingEventHandler):
 
     def on_created(self, event):
         super().on_created(event)
-        
+
         # TODO: Filter on file size?
         with open(event.src_path) as f:
-            handlers.handle(f.read())
+            handlers.handle(f.readline())
+
 
 class FileListener(object):
     """Handle commands using the file system.
 
-    This listener listens for files added in a directory (The request directory)
-    and responds to them in another directory (The response directory).
+    This listener listens for files added in
+    a directory (The request directory) and responds
+    to them in another directory (The response directory).
     """
 
     def __init__(self, req_dir, res_dir):
