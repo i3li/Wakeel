@@ -25,9 +25,15 @@ _HANDLERS = {
 
 
 def handle(command):
+    '''Handles a command.'''
     cmd = _Command.parse(command)
-    if cmd and cmd.name in _HANDLERS:
-        _HANDLERS[cmd.name](cmd.params)
+    if cmd:
+        if cmd.name in _HANDLERS:
+            _HANDLERS[cmd.name](cmd.params)
+        else:
+            raise Exception('Command not supported')
+    else:
+        raise Exception('Bad formatted command')
 
 
 # def main():
