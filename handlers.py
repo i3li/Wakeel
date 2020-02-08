@@ -45,11 +45,11 @@ def handle(command, res_path):
     if cmd:
         if cmd.name in _HANDLERS:
             res = _HANDLERS[cmd.name](cmd.params)
-            _respond(res, res_path)
         else:
-            raise Exception('Command not supported')
+            res = 'Command not supported'
     else:
-        raise Exception('Bad formatted command')
+        res = 'Bad formatted command'
+    _respond(res, res_path)
 
 
 # def main():
