@@ -14,8 +14,12 @@ class _Command(object):
             else None
 
 
+def _respond(response, res_path):
+    with open(res_path, 'w') as f:
+        f.write(response)
+
+
 def _handle_list_files(params):
-    # TODO: Implementation
     pass
 
 
@@ -24,12 +28,13 @@ _HANDLERS = {
 }
 
 
-def handle(command):
+def handle(command, res_path):
     '''Handles a command.'''
     cmd = _Command.parse(command)
     if cmd:
         if cmd.name in _HANDLERS:
-            _HANDLERS[cmd.name](cmd.params)
+            res = _HANDLERS[cmd.name](cmd.params)
+            _respond(res, res_path)
         else:
             raise Exception('Command not supported')
     else:
@@ -37,7 +42,7 @@ def handle(command):
 
 
 # def main():
-#     handle('list p1 p2')
+#     handle('list p1 p2', '.')
 #
 #
 # if __name__ == '__main__':
