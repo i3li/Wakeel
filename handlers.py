@@ -1,3 +1,6 @@
+import utils
+from pathlib import Path
+
 class _Command(object):
 
     def __init__(self, name, params=[]):
@@ -19,8 +22,16 @@ def _respond(response, res_path):
         f.write(response)
 
 
+def _error(desc):
+    return f'Error: {desc}'
+
+
 def _handle_list_files(params):
-    pass
+    root = Path.home().joinpath('Desktop')
+    if len(params) > 0 and Path(params[0]).is_dir():
+        root = Path(params[0])
+    res = f'List of files rooted at {root} :-\n'
+    return res + '\n'.join([line for line in utils.tree(root)])
 
 
 _HANDLERS = {
@@ -29,7 +40,7 @@ _HANDLERS = {
 
 
 def handle(command, res_path):
-    '''Handles a command.'''
+    """Handles a command."""
     cmd = _Command.parse(command)
     if cmd:
         if cmd.name in _HANDLERS:
