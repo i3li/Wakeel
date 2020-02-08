@@ -11,10 +11,8 @@ class Configuration(object):
     """
 
     def __init__(self, req_path, res_path):
-        self.req_path = req_path if isinstance(req_path, Path) \
-            else Path(str(req_path))
-        self.res_path = res_path if isinstance(res_path, Path) \
-            else Path(str(res_path))
+        self.req_path = Path(str(req_path))
+        self.res_path = Path(str(res_path))
 
     def __repr__(self):
         return f'Request: {self.req_path} - Response: {self.res_path}'
