@@ -51,14 +51,3 @@ class FileListener(object):
     def stop(self):
         """Stops the listener"""
         self._observer.stop()
-
-
-# listener = FileListener('/Users/ali/Desktop', '/Users/ali/Desktop')
-# listener.start()
-#
-# import time
-# try:
-#     while True:
-#         time.sleep(1)
-# except KeyboardInterrupt:
-#     listener.stop()

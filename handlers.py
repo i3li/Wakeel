@@ -1,6 +1,7 @@
 import utils
 from pathlib import Path
 
+
 class _Command(object):
 
     def __init__(self, name, params=[]):
