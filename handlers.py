@@ -1,5 +1,6 @@
 import utils
 from pathlib import Path
+import subprocess
 
 
 class _Command(object):
@@ -35,8 +36,51 @@ def _handle_list_files(params):
     return res + '\n'.join([line for line in utils.tree(root)])
 
 
+def _handle_execute_shell(params):
+    if len(params) == 0:
+        return 'Please pass a command to execute'
+    command = ' '.join(params)
+    exec_result = subprocess.run(
+                    command,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    shell=True
+                    )
+
+    stdout_output = '\n'.join(
+                            map(
+                                lambda l: '\t' + l,
+                                exec_result.stdout.decode(
+                                        encoding='utf8'
+                                        ).split('\n')
+                                )
+                            )
+    stderr_output = '\n'.join(
+                            map(
+                                lambda l: '\t' + l,
+                                exec_result.stderr.decode(
+                                        encoding='utf8'
+                                        ).split('\n')
+                                )
+                            )
+    blocks = [
+        f'Command:\n\t{command}',
+        (
+            f'Return Code:\n\t'
+            f"{exec_result.returncode}"
+            f" => {'Success' if exec_result.returncode == 0 else 'Failure'}"
+        ),
+        f'Stdout:\n{stdout_output}',
+        f'Stderr:\n{stderr_output}'
+    ]
+
+    res = '\n\n'.join(blocks)
+    return res
+
+
 _HANDLERS = {
-    'list': _handle_list_files
+    'list': _handle_list_files,
+    'shell': _handle_execute_shell
 }
 
 
